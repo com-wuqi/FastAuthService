@@ -1,7 +1,7 @@
 import unittest
 from secureHelper import *
 
-class MyTestCase(unittest.TestCase):
+class MainTestCase(unittest.TestCase):
 
     def setUp(self):
         # 在每个测试前设置数据
@@ -18,7 +18,6 @@ class MyTestCase(unittest.TestCase):
         # 解码token
         decoded_payload = self.jwt_tool.decode_token(token)
 
-        # 验证解码后的payload包含原始数据
         self.assertEqual(decoded_payload['resource_id'], 0)
         self.assertEqual(decoded_payload['operation'], "test")
         self.assertEqual(decoded_payload['other_data'], "test_1")
@@ -38,7 +37,6 @@ class MyTestCase(unittest.TestCase):
         payload_data = self.payload_test.create_payload()
         token = jwt_tool_expired.create_token(payload_data)
 
-        # 解码应该返回过期错误
         result = jwt_tool_expired.decode_token(token)
         self.assertEqual(result, "jwt.ExpiredSignatureError")
 
