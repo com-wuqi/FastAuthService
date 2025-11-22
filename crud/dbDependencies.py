@@ -1,4 +1,4 @@
-from ..dataBase import engine
+from ..depends import engine
 from sqlmodel import Session
 from typing import Annotated
 from fastapi import Depends
