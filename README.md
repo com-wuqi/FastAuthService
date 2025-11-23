@@ -14,5 +14,7 @@ pyjwt
 python-dotenv
 
 sqlmodel
+
+mysqlclient
 ## 作者
 io.wuqi (在校大学生) 写于 2025.11.22

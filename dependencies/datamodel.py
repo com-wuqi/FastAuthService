@@ -8,7 +8,7 @@ from sqlmodel import Field, SQLModel,Relationship,JSON,Column
 class UserBase(SQLModel):
     id: int = Field(default=None, primary_key=True)
     name: str = Field(index=False, nullable=False)
-    email: str = Field(index=True)
+    email: str = Field(index=True,unique=True)
     password: str = Field(index=True)
     # 永远不要存储用户的明文密码，也不要在响应中发送密码。
     password_salt: str = Field(index=True, nullable=False)

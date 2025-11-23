@@ -1,5 +1,6 @@
 import jwt
 from hashlib import sha256
+from secrets import token_hex
 from datetime import datetime, timedelta, timezone
 
 class JWTHelper:
@@ -78,3 +79,8 @@ def hash_salted_password(password: str, salt: str) -> str:
     """
     return sha256((salt + password).encode('utf-8')).hexdigest()
 
+def generate_secret_key() -> str:
+    return token_hex(256)
+
+def generate_salt():
+    return token_hex(64)

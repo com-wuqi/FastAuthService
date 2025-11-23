@@ -11,7 +11,6 @@ class UserRegister(BaseModel):
     name: str
     password: str
     password_salt: str
-    # 由前端提供随机长字符串，要处理不提供的时候（用secrets）
 
 class UserLogout(BaseModel):
     email: str
