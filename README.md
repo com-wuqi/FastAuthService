@@ -5,6 +5,8 @@
 
 开发中...
 ## 依赖
+已经不支持Python 3.8 及以下版本！！！
+
 python>=3
 
 "fastapi[standard]"
