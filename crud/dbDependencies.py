@@ -10,4 +10,7 @@ def get_session():
         finally:
             session.close()
 
+def get_session_for_background():
+    return Session(engine)
+
 SessionDep = Annotated[Session, Depends(get_session)]

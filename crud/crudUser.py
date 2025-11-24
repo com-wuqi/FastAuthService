@@ -44,6 +44,9 @@ def add_secret_key_by_id(user_id:int,session: SessionDep):
         return False
 
 def update_is_active_and_time_by_id(user_id:int,is_active:bool,session: SessionDep):
+    """
+    用于登录
+    """
     user = session.get(User,user_id)
     user.is_active = is_active
     user.last_login = datetime.now(timezone.utc)
@@ -57,3 +60,18 @@ def update_is_active_and_time_by_id(user_id:int,is_active:bool,session: SessionD
         session.rollback()
         logger.warning(f"user: {user.email} could not update status")
         return False
+
+def user_logout(user_id:int,session: SessionDep):
+    user = session.get(User,user_id)
+    user.is_active = False
+    user.last_login = datetime.now(timezone.utc)
+    session.add(user)
+    try:
+        session.commit()
+        logger.info(f"user: {user.email} logged out")
+        session.refresh(user)
+        return user.is_active
+    except sqlalchemy.exc.IntegrityError:
+        session.rollback()
+        logger.warning(f"user: {user.email} could not logout")
+        return -1

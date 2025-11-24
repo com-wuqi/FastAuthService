@@ -1,7 +1,7 @@
 from typing import List
 from datetime import datetime,timezone
 
-from pygments.lexer import default
+
 from sqlmodel import Field, SQLModel,Relationship,JSON,Column
 
 """
@@ -19,6 +19,7 @@ class UserBase(SQLModel):
     # 是否存活
     last_login: datetime = Field(default_factory=lambda: datetime.now(timezone.utc), nullable=False)
     secret_key: str = Field(index=False)
+    is_banned: bool = Field(default=False)
     # 凭据
     # 用户拥有的资源权限
 

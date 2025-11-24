@@ -17,6 +17,9 @@ async def user_login(data:requestModel.UserLogin,session: SessionDep):
     if user is None:
         logger.warning(f"user with email {user_email} does not exist")
         raise HTTPException(status_code=403, detail="Incorrect email or password")
+    if user.is_banned:
+        logger.warning(f"user with email {user_email} banned but try to login again")
+        raise HTTPException(status_code=403, detail="Incorrect email or password")
     user_passwd_salt = user.password_salt # 数据库中的密码盐
     salt_passwd = secureHelper.hash_salted_password(input_passwd, user_passwd_salt) # 加盐后的用户输入
     hashed_password = user.password # 数据库中的密码
@@ -34,8 +37,25 @@ async def user_login(data:requestModel.UserLogin,session: SessionDep):
     return user
 
 @router.post("/api/user/logout")
-async def user_logout(data:requestModel.UserLogout):
-    pass
+async def user_logout(data:requestModel.UserLogout,session: SessionDep):
+    user_email = data.email  # 用户输入的邮箱
+    input_passwd = data.password  # 用户输入的密码
+    user = crudUser.get_user_by_email(user_email, session)
+    if user is None:
+        logger.warning(f"user with email {user_email} does not exist")
+        raise HTTPException(status_code=403, detail="Incorrect email or password")
+    user_passwd_salt = user.password_salt  # 数据库中的密码盐
+    salt_passwd = secureHelper.hash_salted_password(input_passwd, user_passwd_salt)  # 加盐后的用户输入
+    hashed_password = user.password  # 数据库中的密码
+    if not compare_digest(salt_passwd, hashed_password):
+        logger.warning(f"user with email {user_email} failed to login")
+        raise HTTPException(status_code=403, detail="Incorrect email or password")
+    run = crudUser.user_logout(user.id,session)
+    if run==-1:
+        raise HTTPException(status_code=500, detail="could not logout")
+    else:
+        return {"message": "User logout successful"}
+
 
 @router.post("/api/user/register")
 async def user_register(data:requestModel.UserRegister,session: SessionDep):
