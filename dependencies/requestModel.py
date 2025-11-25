@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 """
 请求体模型
 """
@@ -35,3 +36,35 @@ class ResourceAccess(BaseModel):
     is_admin: bool
     # 判断用户类型，用于获取 secret_key 鉴权，这样就不需要用户密码了
 
+class BanUser(BaseModel):
+    id: int
+    secret_key: str
+    # 管理员信息
+    user_id: int
+
+class CreateResource(BaseModel):
+    name: str
+    resource_name: str
+    operations: List[str]
+    # 所有可以调用的方法
+    is_active: bool
+    # 判断是否启用
+
+class BanResource(BaseModel):
+    id: int
+    secret_key: str
+    resource_id: int
+
+class AddUser(BaseModel):
+    id: int
+    secret_key: str
+    resource_id: int
+
+    user_id: int
+    permission_level: str # 可以执行的操作
+
+class AddAdmin(BaseModel):
+    id: int
+    secret_key: str
+    resource_id: int
+    # 只能给自己权限

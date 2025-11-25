@@ -33,6 +33,7 @@ class UserDataChecker:
         # 检查并重置长时间未活动的用户
         # 为了方便，管理员用户不会被登出
         db = get_session_for_background()
+        # 这里的 db 必须手动 close
         try:
             cutoff_time = datetime.now(timezone.utc) - timedelta(days=30)
             inactive_users = db.exec(select(User).where(

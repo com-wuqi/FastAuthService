@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .routers import testRouter
 from .routers import user as user_router
+from .routers import funcRouter as func_router
 from .depends import create_db_and_tables
 from contextlib import asynccontextmanager
 from .background_checker import UserDataChecker
@@ -51,6 +52,7 @@ app.add_middleware(
 
 app.include_router(testRouter.router)
 app.include_router(user_router.router)
+app.include_router(func_router.router)
 
 @app.get("/")
 async def read_root():

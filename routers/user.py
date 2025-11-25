@@ -78,3 +78,15 @@ async def user_register(data:requestModel.UserRegister,session: SessionDep):
         return {"message": "User created successfully"}
     else:
         raise HTTPException(status_code=400, detail="email already exists!")
+
+@router.post("/api/user/ressetPassword")
+async def user_reset_password(email,session: SessionDep):
+    # 重新计算加盐密码
+    # 等待 depends 中增加邮件模块后完成
+    pass
+
+@router.post("/api/admin/ressetPassword")
+async def user_reset_password(email,session: SessionDep):
+    # 这里的鉴权需要放放
+    pass
+

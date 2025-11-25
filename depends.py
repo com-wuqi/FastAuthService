@@ -1,3 +1,5 @@
+from email.mime.multipart import MIMEMultipart
+
 from sqlmodel import create_engine
 from .dependencies.datamodel import *
 import logging
@@ -48,3 +50,7 @@ def get_logger(name) -> logging.Logger:
     logger.addHandler(ch)
 
     return logger
+
+def send_email(to,subject,content):
+    # 发送一封邮件
+    pass
