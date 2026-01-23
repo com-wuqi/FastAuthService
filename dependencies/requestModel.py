@@ -68,3 +68,6 @@ class AddAdmin(BaseModel):
     secret_key: str
     resource_id: int
     # 只能给自己权限
+
+class ResetPassword(BaseModel):
+    email: str

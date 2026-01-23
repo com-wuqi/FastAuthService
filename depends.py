@@ -1,9 +1,9 @@
-from email.mime.multipart import MIMEMultipart
-
-from sqlmodel import create_engine
-from .dependencies.datamodel import *
 import logging
 from os import getenv
+
+from sqlmodel import create_engine
+
+from .dependencies.datamodel import *
 
 use_sqlite = getenv("USE_SQLITE",default="yes")
 use_mysql = getenv("USE_MYSQL",default="no")
@@ -51,6 +51,3 @@ def get_logger(name) -> logging.Logger:
 
     return logger
 
-def send_email(to,subject,content):
-    # 发送一封邮件
-    pass
