@@ -8,14 +8,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from .routers import testRouter
 from .routers import user as user_router
 from .routers import funcRouter as func_router
-from .depends import create_db_and_tables
+from .routers import mailRouter as mail_router
+from .depends import *
 from contextlib import asynccontextmanager
 from .background_checker import UserDataChecker
-
-#可以像访问系统环境变量一样使用 .env 文件中的变量，例如 os.getenv(key, default=None)
-
+from fastapi_mail import FastMail,ConnectionConfig
 
 background_checker = None
+logger = get_logger(__name__)
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
@@ -36,7 +36,20 @@ async def lifespan(_: FastAPI):
     except asyncio.CancelledError:
         pass
 
+email_config = ConnectionConfig(
+    MAIL_USERNAME=mail_username,
+    MAIL_PASSWORD=mail_password,
+    MAIL_FROM=mail_from,
+    MAIL_PORT=mail_port,
+    MAIL_SERVER=mail_server,
+    MAIL_STARTTLS=mail_starttls,
+    MAIL_SSL_TLS=mail_ssl_tls,
+    USE_CREDENTIALS=mail_use_credentials,
+    TEMPLATE_FOLDER=email_template_folder
+)
+
 app = FastAPI(debug=True,lifespan=lifespan)
+mail = FastMail(email_config)
 
 origins = [
     "*",
@@ -53,6 +66,7 @@ app.add_middleware(
 app.include_router(testRouter.router)
 app.include_router(user_router.router)
 app.include_router(func_router.router)
+app.include_router(mail_router.router)
 
 @app.get("/")
 async def read_root():

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,EmailStr
 from typing import List
 """
 请求体模型
@@ -71,3 +71,13 @@ class AddAdmin(BaseModel):
 
 class ResetPassword(BaseModel):
     email: str
+
+class EmailRequest(BaseModel):
+    email: EmailStr
+    subject: str
+    body: str
+
+class VerifyEmailRequest(BaseModel):
+    email: EmailStr
+    code: str
+

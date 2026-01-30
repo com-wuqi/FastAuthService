@@ -35,14 +35,15 @@ class UserDataChecker:
         db = get_session_for_background()
         # 这里的 db 必须手动 close
         try:
-            cutoff_time = datetime.now(timezone.utc) - timedelta(days=30)
+            cutoff_time = datetime.now(timezone.utc) - timedelta(days=10)
             inactive_users = db.exec(select(User).where(
             User.last_login < cutoff_time,
             User.is_active == True)).all()
             for user in inactive_users:
-            # 修补为不活跃，登出
-                logger.warning("fixing users' status...")
+            # 修补为不活跃，登出, 修改校验状态
+                logger.warning("changing users' status...")
                 user.is_active = False
+                user.is_code_verified = False
             db.commit()
         except Exception as e:
             logger.error(e)

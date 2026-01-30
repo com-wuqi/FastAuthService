@@ -7,6 +7,18 @@ from .dependencies.datamodel import *
 
 use_sqlite = getenv("USE_SQLITE",default="yes")
 use_mysql = getenv("USE_MYSQL",default="no")
+
+# 邮件配置
+mail_username = getenv("MAIL_USERNAME", "test")
+mail_password = getenv("MAIL_PASSWORD", "test")
+mail_from = getenv("MAIL_FROM", "example@example.com")
+mail_port = getenv("MAIL_PORT", 587)
+mail_server = getenv("MAIL_SERVER", "example.com")
+mail_starttls = getenv("MAIL_STARTTLS", True)
+mail_ssl_tls = getenv("MAIL_SSL_TLS", False)
+mail_use_credentials = getenv("MAIL_USE_CREDENTIALS", True)
+email_template_folder = getenv("EMAIL_TEMPLATE_FOLDER", "./email_templates")
+
 if use_sqlite == "yes":
     sqlite_uri = getenv("SQLALCHEMY_DATABASE_URI",default="sqlite:///sqlite0.db")
     connect_args = {"check_same_thread": False}
