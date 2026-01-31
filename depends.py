@@ -2,7 +2,7 @@ import logging
 from os import getenv
 
 from sqlmodel import create_engine
-
+from fastapi_mail import FastMail,ConnectionConfig
 from .dependencies.datamodel import *
 
 use_sqlite = getenv("USE_SQLITE",default="yes")
@@ -43,6 +43,19 @@ elif use_mysql == "yes":
     )
 else:
     raise ValueError("Unsupported SQLAlchemy engine type")
+
+email_config = ConnectionConfig(
+    MAIL_USERNAME=mail_username,
+    MAIL_PASSWORD=mail_password,
+    MAIL_FROM=mail_from,
+    MAIL_PORT=mail_port,
+    MAIL_SERVER=mail_server,
+    MAIL_STARTTLS=mail_starttls,
+    MAIL_SSL_TLS=mail_ssl_tls,
+    USE_CREDENTIALS=mail_use_credentials,
+    TEMPLATE_FOLDER=email_template_folder
+)
+mail = FastMail(email_config)
 
 
 def create_db_and_tables():

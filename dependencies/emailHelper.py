@@ -1,7 +1,6 @@
 from fastapi_mail import MessageSchema, MessageType
 from typing import List
-from ..main import mail
-from ..depends import get_logger
+from ..depends import get_logger,mail
 import asyncio
 
 logger = get_logger(__name__)

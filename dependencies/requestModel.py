@@ -70,11 +70,11 @@ class AddAdmin(BaseModel):
     # 只能给自己权限
 
 class ResetPassword(BaseModel):
-    email: str
+    recipient: EmailStr
 
 class EmailRequest(BaseModel):
-    email: EmailStr
     subject: str
+    recipients: List[EmailStr]
     body: str
 
 class VerifyEmailRequest(BaseModel):

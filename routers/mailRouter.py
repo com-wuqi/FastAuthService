@@ -7,13 +7,21 @@ logger = get_logger(__name__)
 router = APIRouter()
 
 verification_codes = {}
-# TODO: 完善销毁超时code的功能
+# TODO: 完善销毁超时code的功能, 邮件code
+verification_emails = {}
+# TODO: 待验证邮件信息
 
 # TODO: 完善并且测试接口
 @router.post("/api/email/send_email")
 async def send_email(data: requestModel.EmailRequest):
     # 基础邮件发送
-    pass
+    result = await EmailService.send_common_email(subject=data.subject,recipients=data.recipients,body=data.body)
+    if result:
+        logger.info(f"""subject: {data.subject},recipients: {data.recipients},body: {data.body} successfully sent to {data.recipients}""")
+        return {"status":True}
+    else:
+        logger.warning(f"""subject: {data.subject},recipients: {data.recipients},body: {data.body} failed to send to {data.recipients}""")
+        return {"status":False}
 
 @router.post("/api/email/send_verification_code")
 async def send_verification_code(data: requestModel.VerifyEmailRequest):

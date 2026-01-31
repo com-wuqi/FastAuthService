@@ -12,7 +12,6 @@ from .routers import mailRouter as mail_router
 from .depends import *
 from contextlib import asynccontextmanager
 from .background_checker import UserDataChecker
-from fastapi_mail import FastMail,ConnectionConfig
 
 background_checker = None
 logger = get_logger(__name__)
@@ -36,21 +35,7 @@ async def lifespan(_: FastAPI):
     except asyncio.CancelledError:
         pass
 
-email_config = ConnectionConfig(
-    MAIL_USERNAME=mail_username,
-    MAIL_PASSWORD=mail_password,
-    MAIL_FROM=mail_from,
-    MAIL_PORT=mail_port,
-    MAIL_SERVER=mail_server,
-    MAIL_STARTTLS=mail_starttls,
-    MAIL_SSL_TLS=mail_ssl_tls,
-    USE_CREDENTIALS=mail_use_credentials,
-    TEMPLATE_FOLDER=email_template_folder
-)
-
 app = FastAPI(debug=True,lifespan=lifespan)
-mail = FastMail(email_config)
-
 origins = [
     "*",
 ]

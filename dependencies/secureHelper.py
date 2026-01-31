@@ -84,3 +84,9 @@ def generate_secret_key() -> str:
 
 def generate_salt():
     return token_hex(64)
+
+def generate_email_verification_code() -> str:
+    return token_hex(4)
+
+def generate_verification_email() -> str:
+    return token_hex(8)
