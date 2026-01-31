@@ -1,5 +1,6 @@
 from fastapi_mail import MessageSchema, MessageType
 from typing import List
+from pydantic import EmailStr
 from ..depends import get_logger,mail
 import asyncio
 
@@ -12,7 +13,7 @@ class EmailService:
 
     @staticmethod
     async def send_common_email(
-            subject: str, recipients: List[str],
+            subject: str, recipients: List[EmailStr],
             body: str, subtype: MessageType = MessageType.plain
     ) -> bool:
         message = MessageSchema(
@@ -30,7 +31,7 @@ class EmailService:
 
     @staticmethod
     async def send_html_email(
-            subject: str, recipients: List[str],
+            subject: str, recipients: List[EmailStr],
             html_body: str
     ) -> bool:
         message = MessageSchema(
@@ -48,7 +49,7 @@ class EmailService:
 
     @staticmethod
     async def send_verify_email(
-            email: str,
+            email: EmailStr,
             code: str
     ) -> bool:
         html_body = f"""

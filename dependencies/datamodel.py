@@ -29,9 +29,7 @@ class User(UserBase, table=True):
         back_populates="user"
     )
     is_email_verified: bool = Field(default=False)
-    # 标记是否验证了邮箱
-    is_code_verified: bool = Field(default=False)
-    # 标记是否进行了 code 验证, 资源权限相关 (待实现)
+    # 标记是否验证了邮箱, 资源权限相关 (待实现)
 
 
 class AdminUser(UserBase, table=True):

@@ -5,7 +5,7 @@ from sqlmodel import select
 
 from .crud.dbDependencies import *
 from .dependencies.datamodel import *
-from .depends import get_logger
+from .depends import get_logger,verification_codes,verification_emails
 
 logger = get_logger(__name__)
 
@@ -50,6 +50,16 @@ class UserDataChecker:
             db.rollback()
         finally:
             db.close()
+
+        # 销毁超时的验证码
+        for key in verification_codes.keys():
+            if verification_codes[key]["expires"] < asyncio.get_event_loop().time():
+                del verification_codes[key]
+                logger.warning(f"cleaned verification code for email: {key}")
+        # # 销毁超时激活邮件
+        # for key in verification_emails.keys():
+        #     if verification_emails[key]["expires"] < asyncio.get_event_loop().time():
+        #         del verification_emails[key]
 
     def stop_checking(self):
         """停止检查服务"""

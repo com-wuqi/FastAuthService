@@ -86,7 +86,5 @@ def generate_salt():
     return token_hex(64)
 
 def generate_email_verification_code() -> str:
-    return token_hex(4)
+    return token_hex(3).upper()
 
-def generate_verification_email() -> str:
-    return token_hex(8)

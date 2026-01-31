@@ -78,6 +78,6 @@ class EmailRequest(BaseModel):
     body: str
 
 class VerifyEmailRequest(BaseModel):
-    email: EmailStr
+    recipient: EmailStr
     code: str
 

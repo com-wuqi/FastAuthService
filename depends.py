@@ -3,15 +3,18 @@ from os import getenv
 
 from sqlmodel import create_engine
 from fastapi_mail import FastMail,ConnectionConfig
+from pydantic import EmailStr,TypeAdapter,SecretStr
 from .dependencies.datamodel import *
 
 use_sqlite = getenv("USE_SQLITE",default="yes")
 use_mysql = getenv("USE_MYSQL",default="no")
 
 # 邮件配置
+email_str = TypeAdapter(EmailStr)
+email_key = TypeAdapter(SecretStr)
 mail_username = getenv("MAIL_USERNAME", "test")
-mail_password = getenv("MAIL_PASSWORD", "test")
-mail_from = getenv("MAIL_FROM", "example@example.com")
+mail_password = getenv("MAIL_PASSWORD", email_key.validate_python("test"))
+mail_from = getenv("MAIL_FROM", email_str.validate_python("example@example.com"))
 mail_port = getenv("MAIL_PORT", 587)
 mail_server = getenv("MAIL_SERVER", "example.com")
 mail_starttls = getenv("MAIL_STARTTLS", True)
@@ -56,6 +59,11 @@ email_config = ConnectionConfig(
     TEMPLATE_FOLDER=email_template_folder
 )
 mail = FastMail(email_config)
+
+verification_codes = {}
+
+verification_emails = {}
+# 待验证邮件信息, 目前未启用
 
 
 def create_db_and_tables():
